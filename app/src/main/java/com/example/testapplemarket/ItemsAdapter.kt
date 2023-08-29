@@ -1,18 +1,29 @@
 package com.example.testapplemarket
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapplemarket.databinding.ItemMainRecyclerviewBinding
 import java.text.DecimalFormat
 
 class ItemsAdapter(var itemsList: MutableList<Items>): RecyclerView.Adapter<ItemsAdapter.Holder>() {
+
+    interface ItemClick {
+        fun onClick(view : View, position : Int)
+    }
+
+    var itemClick : ItemClick? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemMainRecyclerviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.itemView.setOnClickListener{
+            itemClick?.onClick(it, position)
+        }
         holder.bind(itemsList[position])
     }
 
