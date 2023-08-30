@@ -1,7 +1,9 @@
 package com.example.testapplemarket
 
+import java.text.DecimalFormat
+
 class ItemsDataList {
-    var dataList:MutableList<Items> = arrayListOf()
+    private var dataList:MutableList<Items> = arrayListOf()
 
     init {
         dataList.add(Items(R.drawable.sample1, "산지 한달된 선풍기 팝니다", "이사가서 필요가 없어졌어요 급하게 내놓습니다", "대현동", 1000, "서울 서대문구 창천동", 13, 25))
@@ -23,5 +25,9 @@ class ItemsDataList {
 
     fun getItems(position:Int): Items {
         return dataList[position]
+    }
+
+    fun formatPrice(position: Int): String{
+        return DecimalFormat("#,###").format(dataList[position]) + "원"
     }
 }
