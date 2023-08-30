@@ -9,7 +9,6 @@ import java.text.DecimalFormat
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private val itemsDataList = ItemsDataList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,14 +18,14 @@ class DetailActivity : AppCompatActivity() {
         var view = binding.root
         setContentView(view)
 
-        val position = intent.getIntExtra("position", 0)
+        val item1 = Items(R.drawable.sample1, "산지 한달된 선풍기 팝니다", "이사가서 필요가 없어졌어요 급하게 내놓습니다", "대현동", 1000, "서울 서대문구 창천동", 13, 25)
 
-        val getItems = itemsDataList.getItems(position)
+        val item = intent?.getParcelableExtra("item", Items::class.java) ?: item1
 
-        binding.itemImageDetail.setImageResource(getItems.itemImage)
-        binding.subjectTextDetail.text = getItems.itemSubject
-        binding.contentTextDetail.text = getItems.itemContent
-        binding.priceTextDetail.text = itemsDataList.formatPrice(position)
+        binding.itemImageDetail.setImageResource(item.itemImage)
+        binding.subjectTextDetail.text = item.itemSubject
+        binding.contentTextDetail.text = item.itemContent
+        binding.priceTextDetail.text = DecimalFormat("#,###").format(item.itemPrice) + "원"
 
     }
 }
