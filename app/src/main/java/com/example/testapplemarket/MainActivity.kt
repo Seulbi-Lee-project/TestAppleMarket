@@ -1,11 +1,15 @@
 package com.example.testapplemarket
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapplemarket.databinding.ActivityMainBinding
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,5 +48,23 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+    }
+
+    override fun onBackPressed() {
+        var builder = AlertDialog.Builder(this)
+        builder.setTitle("")
+        builder.setMessage("종료하시겠습니까?")
+        builder.setIcon(R.mipmap.ic_launcher)
+
+        // 버튼 클릭시에 무슨 작업을 할 것인가!
+        val listener = DialogInterface.OnClickListener { dialogInterface, i ->
+            finish()
+        }
+
+        builder.setPositiveButton("확인", listener)
+        builder.setNegativeButton("취소", null)
+
+        builder.show()
     }
 }
