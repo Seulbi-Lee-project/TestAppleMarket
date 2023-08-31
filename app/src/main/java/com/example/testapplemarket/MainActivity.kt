@@ -1,12 +1,21 @@
 package com.example.testapplemarket
 
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapplemarket.databinding.ActivityMainBinding
 import kotlin.system.exitProcess
@@ -23,11 +32,15 @@ class MainActivity : AppCompatActivity() {
         var view = binding.root
         setContentView(view)
 
+        binding.notificationMain.setOnClickListener {
+            notification()
+        }
+
         //더미 데이터
         val dataList = mutableListOf<Items>()
         dataList.add(Items(R.drawable.sample1, "산지 한달된 선풍기 팝니다", "이사가서 필요가 없어졌어요 급하게 내놓습니다", "대현동", 1000, "서울 서대문구 창천동", 13, 25))
         dataList.add(Items(R.drawable.sample2, "김치냉장고", "이사로인해 내놔요", "안마담", 20000, "인천 계양구 귤현동", 8, 28))
-        dataList.add(Items(R.drawable.sample3, "샤넬 카드지갑", "고퀄지갑이구요\n사용감이 있어서 싸게 내어둡니다", "코코유", 10000, "수성구 범어동", 23, 5))
+        dataList.add(Items(R.drawable.sample3, "샤넬 카드지갑 샤넬 카드지갑 샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑샤넬 카드지갑", "고퀄지갑이구요\n사용감이 있어서 싸게 내어둡니다", "코코유", 10000, "수성구 범어동", 23, 5))
         dataList.add(Items(R.drawable.sample4, "금고", "금고\n떼서 가져가야함\n대우월드마크센텀\n미국이주관계로 싸게 팝니다", "Nicole", 10000, "해운대구 우제2동", 14, 17))
         dataList.add(Items(R.drawable.sample5, "갤럭시Z플립3 팝니다", "갤럭시 Z플립3 그린 팝니다\n항시 케이스 씌워서 썻고 필름 한장챙겨드립니다\n화면에 살짝 스크래치난거 말고 크게 이상은없습니다!", "절명", 150000, "연제구 연산제8동", 22, 9))
         dataList.add(Items(R.drawable.sample6, "프라다 복조리백", "까임 오염없고 상태 깨끗합니다\n정품여부모름", "미니멀하게", 50000, "수원시 영통구 원천동", 25, 16))
@@ -67,4 +80,64 @@ class MainActivity : AppCompatActivity() {
 
         builder.show()
     }
+
+    fun notification(){
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val builder: NotificationCompat.Builder
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            // 26 버전 이상
+            val channelId="one-channel"
+            val channelName="My Channel One"
+            val channel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                // 채널에 다양한 정보 설정
+                description = "My Channel One Description"
+                setShowBadge(true)
+                val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val audioAttributes = AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .build()
+                setSound(uri, audioAttributes)
+                enableVibration(true)
+            }
+            // 채널을 NotificationManager에 등록
+            manager.createNotificationChannel(channel)
+
+            // 채널을 이용하여 builder 생성
+            builder = NotificationCompat.Builder(this, channelId)
+
+        }else {
+            // 26 버전 이하
+            builder = NotificationCompat.Builder(this)
+        }
+
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_bell)
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        // 알림의 기본 정보
+        builder.run {
+            setSmallIcon(R.mipmap.ic_launcher)
+            setWhen(System.currentTimeMillis())
+            setContentTitle("새로운 알림입니다.")
+            setContentText("알림이 잘 보이시나요.")
+            setStyle(NotificationCompat.BigTextStyle()
+                .bigText("이것은 긴텍스트 샘플입니다. 아주 긴 텍스트를 쓸때는 여기다 하면 됩니다.이것은 긴텍스트 샘플입니다. " +
+                        "아주 긴 텍스트를 쓸때는 여기다 하면 됩니다.이것은 긴텍스트 샘플입니다. 아주 긴 텍스트를 쓸때는 여기다 하면 됩니다."))
+                        setLargeIcon(bitmap)
+//            setStyle(NotificationCompat.BigPictureStyle()
+//                    .bigPicture(bitmap)
+//                    .bigLargeIcon(null))  // hide largeIcon while expanding
+                        addAction(R.mipmap.ic_launcher, "Action", pendingIntent)
+        }
+
+
+        manager.notify(11, builder.build())
+    }
+
 }
