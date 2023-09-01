@@ -1,11 +1,13 @@
 package com.example.testapplemarket
 
+import android.Manifest
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.media.AudioAttributes
 import android.media.RingtoneManager
@@ -15,7 +17,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapplemarket.databinding.ActivityMainBinding
@@ -90,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             // 26 버전 이상
             val channelId="one-channel"
-            val channelName="My Channel One"
+            val channelName="Test Apple Market"
             val channel = NotificationChannel(
                 channelId,
                 channelName,
@@ -127,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             setSmallIcon(R.mipmap.ic_launcher)
             setWhen(System.currentTimeMillis())
             setContentTitle("새로운 알림입니다.")
-            setContentText("알림이 잘 보이시나요.")
+            setContentText("알림을 띄웁니다.")
             setStyle(NotificationCompat.BigTextStyle()
                 .bigText("이것은 긴텍스트 샘플입니다. 아주 긴 텍스트를 쓸때는 여기다 하면 됩니다.이것은 긴텍스트 샘플입니다. " +
                         "아주 긴 텍스트를 쓸때는 여기다 하면 됩니다.이것은 긴텍스트 샘플입니다. 아주 긴 텍스트를 쓸때는 여기다 하면 됩니다."))
@@ -141,5 +145,4 @@ class MainActivity : AppCompatActivity() {
 
         manager.notify(11, builder.build())
     }
-
 }
