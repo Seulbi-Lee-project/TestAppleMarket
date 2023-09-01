@@ -26,6 +26,8 @@ class DetailActivity : AppCompatActivity() {
         binding.subjectTextDetail.text = item.itemSubject
         binding.contentTextDetail.text = item.itemContent
         binding.priceTextDetail.text = DecimalFormat("#,###").format(item.itemPrice) + "원"
-
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
     }
 }

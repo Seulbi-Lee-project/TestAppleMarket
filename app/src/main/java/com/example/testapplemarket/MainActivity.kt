@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.core.app.NotificationCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testapplemarket.databinding.ActivityMainBinding
 import kotlin.system.exitProcess
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = ItemsAdapter(dataList)
         binding.recyclerViewMain.adapter = adapter
         binding.recyclerViewMain.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewMain.addItemDecoration(DividerItemDecoration(this, 1))
 
         adapter.itemClick = object : ItemsAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {

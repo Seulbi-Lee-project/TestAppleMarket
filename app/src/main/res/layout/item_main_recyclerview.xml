@@ -7,11 +7,11 @@
     <ImageView
         android:id="@+id/item_image"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/image_selector"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/image_round"
         android:layout_width="@dimen/item_image_size"
         android:layout_height="@dimen/item_image_size"/>
     <LinearLayout
+        android:layout_margin="@dimen/basic_margin"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

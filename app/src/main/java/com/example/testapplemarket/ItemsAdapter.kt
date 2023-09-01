@@ -45,6 +45,7 @@ class ItemsAdapter(var itemsList: MutableList<Items>): RecyclerView.Adapter<Item
 
         fun bind(items:Items){
             itemImage.setImageResource(items.itemImage)
+            itemImage.clipToOutline = true
             itemSubject.text = items.itemSubject
             itemPlace.text = items.itemPlace
             itemPrice.text = DecimalFormat("#,###").format(items.itemPrice) + "원"
